@@ -1,4 +1,3 @@
-// Library include statements
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,9 +13,7 @@ int main(){
     cout << "Reading input file...";
     ifstream input_file ("/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/inputs/day_1.txt");
     if (input_file.is_open()){
-        // this while loop gets the next line in the text file.
         while(getline(input_file, line)){
-            // If still on the current elf
             if (line != ""){
                 current_calories += stoi(line);
             }
