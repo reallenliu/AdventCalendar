@@ -5,9 +5,6 @@
 
 using namespace std;
 
-enum symbol {X=1,Y,Z};
-
-
 void symbol_points(map<char, int>::iterator &key_find, int &total_score){
     switch(key_find->second){
         case 1:
@@ -25,7 +22,6 @@ void symbol_points(map<char, int>::iterator &key_find, int &total_score){
 
 int main(){
     string line;
-    symbol symbol;
     map <char, int> score_mapping = {{'A', 1}, {'B', 2}, {'C', 3},
                                         {'X', 1}, {'Y', 2}, {'Z', 3}};
     map<char,int>::iterator key_find;
@@ -37,8 +33,7 @@ int main(){
             const char opponent_symbol = line[0];
             const char my_symbol = line[2];
             key_find= score_mapping.find(my_symbol);
-            
-            // Draw case
+
             if ((opponent_symbol == 'A' && my_symbol == 'X') or (opponent_symbol == 'B' && my_symbol == 'Y') 
             or (opponent_symbol == 'C' && my_symbol == 'Z')){
                 total_score += 3;
@@ -49,8 +44,6 @@ int main(){
                     or (opponent_symbol == 'C' && my_symbol == 'X')){
                 total_score += 6;
                 symbol_points(key_find, total_score);
-
-                            
             }
             else{
                 symbol_points(key_find, total_score);
