@@ -2,28 +2,95 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <set>
+#include <list>
 
 using namespace std;
 
+char search_for_item(string first_elf, string sec_elf, string third_elf){
+    int i = first_elf.size();
+    int j = sec_elf.size();
+    int k = third_elf.size();
+    string longest_elf;
+    string mid_elf;
+    string short_elf;
 
-char search_for_item(string first_comp, string second_comp, int length){
-    string identical_item = "";
-    for (int x = 0; x < length; x++){
-        int lower = 0;
-        int upper = length-1;
-        int mid = length / 2;
-        while (lower <= upper ){
-            mid = lower + (upper-lower)/2;
-            if (first_comp[x] == second_comp[mid]){
-                // cout << second_comp[mid] << "\n";
-                char sames = second_comp[mid];
-                return sames;
+    //Sorting three elves by length
+
+    if (i >= j && i>= k){
+        longest_elf = first_elf;
+        if (j >= k){
+            mid_elf = sec_elf;
+            short_elf = third_elf;
+        }
+        else {
+            mid_elf = third_elf;
+            short_elf = sec_elf; 
+        }
+    }
+    else if (j >= i && j >= k){
+        longest_elf = sec_elf; 
+        if (i >= k){
+            mid_elf = first_elf;
+            short_elf = third_elf;
+        }
+        else {
+            mid_elf = third_elf;
+            short_elf = first_elf; 
+        }
+    }
+    else {
+        longest_elf = third_elf;
+        if (i >= j){
+            mid_elf = first_elf;
+            short_elf = sec_elf;
+        }
+        else {
+            mid_elf = sec_elf;
+            short_elf = first_elf; 
+        }
+    }
+
+    // Look through second elf first. If a match occurs, look through third elf. If match occurs, return result
+    for(int x = 0;x < longest_elf.size(); x++){                        
+        int low_first = 0;
+        int high_first = mid_elf.size() - 1;
+        int mid_first;
+        char item_to_look_for = longest_elf[x];
+
+        while(low_first <= high_first){
+            mid_first = low_first + (high_first - low_first) / 2;
+            if (item_to_look_for == mid_elf[mid_first]){
+                int low_sec = 0;
+                int high_sec = short_elf.size() - 1;
+                int mid_sec;
+                //Searching through shortest elf
+                while(low_sec <= high_sec){
+                    mid_sec = low_sec + (high_sec - low_sec) / 2;
+                    if(item_to_look_for == short_elf[mid_sec]){
+                        cout << "Similar badge: " << item_to_look_for << "\n\n";
+                        return item_to_look_for;
+                    }
+                    else if (item_to_look_for > short_elf[mid_sec]){
+                        low_sec = mid_sec + 1;
+                    }
+                    else {
+                        high_sec = mid_sec - 1;
+                    }
+                }
+                
+                if (item_to_look_for > mid_elf[mid_first]){
+                    low_first = mid_first + 1;
+                }
+                else {
+                    high_first = mid_first - 1;
+                }
             }
-            else if (first_comp[x] > second_comp[mid]){
-                lower = mid +1;
+            else if (item_to_look_for > mid_elf[mid_first]){
+                low_first = mid_first + 1;
             }
             else {
-                upper = mid - 1;
+                high_first = mid_first - 1;
             }
         }
     }
@@ -32,34 +99,28 @@ char search_for_item(string first_comp, string second_comp, int length){
 
 int main(){
     string line;
-    string first_comp;
-    string sec_comp;
+    string first_elf,sec_elf,third_elf;
     int total_sum;
 
     ifstream input_file ("/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/inputs/day_3.txt");
     if(input_file.is_open()){
-        while(getline(input_file, line)){
-            int line_length = 0;
-            line_length = line.length();
-            first_comp.append(line.substr(0,line_length/2));
-            sec_comp.append(line.substr(line_length/2, line_length/2));
-
-            //sort both strings 
-            sort(first_comp.begin(), first_comp.end());
-            sort(sec_comp.begin(), sec_comp.end());
-            // cout << first_comp << " " << sec_comp << "\n";
-
-            char similar_item = search_for_item(first_comp, sec_comp, line_length/2);
+        while(getline(input_file, first_elf) && getline(input_file, sec_elf) && getline(input_file, third_elf)){
             
+            // Sort the strings
+            sort(first_elf.begin(), first_elf.end());
+            sort(sec_elf.begin(), sec_elf.end());
+            sort(third_elf.begin(), third_elf.end());
+
+            cout << first_elf << "\n" << sec_elf << "\n" << third_elf << "\n";
+            char similar_item = search_for_item(first_elf, sec_elf, third_elf);
+
             if (similar_item >= 65 && similar_item <= 90){
                 total_sum += similar_item-38;
             }
             else {
                 total_sum+= similar_item-96;
             }
-            // cout << total_sum << "\n";
-            first_comp = "";
-            sec_comp = "";
+
         }
         cout << "Total_priority value: " << total_sum;
     }
