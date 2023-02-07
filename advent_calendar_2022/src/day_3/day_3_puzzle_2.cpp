@@ -2,54 +2,26 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
-#include <set>
+#include <vector>
 #include <list>
 
 using namespace std;
 
+
+bool cmp(const string str_one, const string str_two){
+    return str_one.size() < str_two.size();
+}
+
 char search_for_item(string first_elf, string sec_elf, string third_elf){
-    int i = first_elf.size();
-    int j = sec_elf.size();
-    int k = third_elf.size();
     string longest_elf;
     string mid_elf;
     string short_elf;
-
-    //Sorting three elves by length
-
-    if (i >= j && i>= k){
-        longest_elf = first_elf;
-        if (j >= k){
-            mid_elf = sec_elf;
-            short_elf = third_elf;
-        }
-        else {
-            mid_elf = third_elf;
-            short_elf = sec_elf; 
-        }
-    }
-    else if (j >= i && j >= k){
-        longest_elf = sec_elf; 
-        if (i >= k){
-            mid_elf = first_elf;
-            short_elf = third_elf;
-        }
-        else {
-            mid_elf = third_elf;
-            short_elf = first_elf; 
-        }
-    }
-    else {
-        longest_elf = third_elf;
-        if (i >= j){
-            mid_elf = first_elf;
-            short_elf = sec_elf;
-        }
-        else {
-            mid_elf = sec_elf;
-            short_elf = first_elf; 
-        }
-    }
+    
+    vector<string> elves {first_elf, sec_elf, third_elf};
+    sort(elves.begin(), elves.end(), cmp);
+    longest_elf = elves[2];
+    mid_elf = elves[1];
+    short_elf = elves[0];
 
     // Look through second elf first. If a match occurs, look through third elf. If match occurs, return result
     for(int x = 0;x < longest_elf.size(); x++){                        
