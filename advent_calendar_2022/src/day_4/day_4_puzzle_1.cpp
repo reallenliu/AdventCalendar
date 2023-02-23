@@ -45,10 +45,17 @@ vector<int> second_range = {};
 void rangeToSequence(string range, vector<int> &seq_group){
     vector<string> split_range;
     split_range = splitString(range, "-");
-
-    for (int i = stoi(split_range[0]); i < stoi(split_range[1]) + 1; i++){
+    if(split_range[0] != split_range[1]){
+        for (int i = stoi(split_range[0]); i < stoi(split_range[1]) + 1; i++){
         seq_group.push_back(i);
+        }
     }
+    else {
+        seq_group.push_back(stoi(split_range[0]));
+        cout << seq_group[0];
+    }
+
+
 }
 
 // This function returns true if one of the groups is completely overlapped by the other. False otherwise
@@ -98,24 +105,41 @@ int test_split_string_sec_half_comma(){
 
 //Range to sequence tests
 int test_range_to_sequence(){
+    first_range = {};
     rangeToSequence("2-4", first_range); 
     vector<int> test_range = {2,3,4};
     return (first_range == test_range); 
 }
 int test_range_to_sequence_equal_ends(){
+    first_range = {};
     rangeToSequence("2-2", first_range); 
     vector<int> test_range = {2};
     return (first_range == test_range); 
 }
+int test_range_to_sequence_two_digits(){
+    first_range = {};
+    rangeToSequence("12-14", first_range); 
+    vector<int> test_range = {12,13,14};
+    return (first_range == test_range); 
+}
+int test_range_to_sequence_two_to_three(){
+    first_range = {};
+    rangeToSequence("2-10", first_range); 
+    vector<int> test_range = {2,3,4,5,6,7,8,9,10};
+    return (first_range == test_range); 
+}
+
 
 int main(){
-    // assert(test_fully_contains());
+    assert(test_fully_contains());
     assert(test_single_group_contains());
     assert(test_overlapping_does_not_contain());
     assert(test_does_not_contain());
     assert(test_split_string_first_half_comma());
     assert(test_split_string_sec_half_comma());
     assert(test_range_to_sequence());
+    assert(test_range_to_sequence_equal_ends());
+    // assert(test_range_to_sequence_two_to_three());
     // test_parsed_input_single_digits();
     // assert(test_parsed_input_single_digits());
     // assert(test_parsed_input_double_digits());
