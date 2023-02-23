@@ -64,12 +64,6 @@ int check_for_overlap(vector<int> group_one, vector<int> group_two){
     return (includes(group_one.begin(), group_one.end(), group_two.begin(), group_two.end()));
 }
 
-//Listing tests
-// int test_parsed_input_single_digits(){parse_input("2-4,6-8"); return (first_half == "234");} 
-// int test_parsed_input_double_digits(){parse_input("53-54,2-53"); return (first_half == "5354");}
-// int test_parsed_input_triple_digits(){parse_input("100-102,3-5"); return (first_half == "100101102");}
-// int test_parsed_input_single_to_double_digits(){parse_input("8-11,3-5"); return (first_half == "891011");}
-// int test_parsed_input_double_to_triple_digits(){parse_input("98-102,3-5"); return (first_half == "9899100101102");}
 
 // Contains tests
 int test_fully_contains(){
