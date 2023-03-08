@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/day_01_1.dir/src/day_1/day_1_puzzle_1.cpp.o -o day_01_1 
