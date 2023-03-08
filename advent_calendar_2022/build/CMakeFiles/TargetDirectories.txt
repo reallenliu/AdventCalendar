@@ -1,3 +1,0 @@
-/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/build/CMakeFiles/day_01_1.dir
-/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/build/CMakeFiles/edit_cache.dir
-/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/build/CMakeFiles/rebuild_cache.dir
