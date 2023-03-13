@@ -2,6 +2,7 @@
 #include <fstream>
 #include <algorithm>
 #include <string>
+#include <string.h>
 #include <vector>
 #include <assert.h>
 
@@ -52,6 +53,25 @@ vector<vector<char>> ParseInputCrates(string file_path){
 }
 
 
+// This function gets a string as an input and parses it for the moves
+vector<int> ParseLineForMoves(string line){
+    int first_column = 0;
+    int sec_column = 0;
+    int move_count = 0;
+
+
+    int from_index = line.find("from");
+    move_count = stoi(line.substr(5,(from_index -6)));
+    first_column = stoi(line.substr(from_index+5,1));
+    sec_column = stoi(line.substr(from_index+10, 1));
+
+    cout << "move " << move_count << " from " << first_column << " to " << sec_column; 
+    vector<int> results = {first_column,sec_column,move_count};
+    return results;
+
+}
+
+
 
 /****Tests****/
 
@@ -71,9 +91,21 @@ int TestParseInputCrates(){
     
 }
 
+
 // This test passes a transform instruction into the parsing function 
-int TestParseTransformLine(){
-    return 1;
+int TestParseLineForMoves(){
+    string test_line = "move 2 from 2 to 8";
+    vector<int> expected_result = {2,8,2};
+    vector<int> actual_result = ParseLineForMoves(test_line);
+    return actual_result == expected_result;
+        
+}
+
+int TestParseLineForMovesDoubleDigits(){
+    string test_line = "move 22 from 5 to 9";
+    vector<int> expected_result = {5,9,22};
+    vector<int> actual_result = ParseLineForMoves(test_line);
+    return actual_result == expected_result;
 }
 
 
@@ -83,7 +115,11 @@ int TestApplyTransform(){
 }
 
 
+
+/****Main function****/
 int main(){
     assert(TestParseInputCrates());
+    assert(TestParseLineForMoves());
+    // assert(TestParseLineForMovesDoubleDigits());
     return 0;
 }
