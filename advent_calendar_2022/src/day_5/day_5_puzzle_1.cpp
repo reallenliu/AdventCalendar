@@ -71,7 +71,10 @@ vector<int> ParseLineForMoves(string line){
 
 }
 
+// This function gets a move_instructions vector and a matrix (passed by reference). It then applies the moves to the matrix
+void ApplyTransformToCrates(vector<int> instructions, vector<vector<char>> &cargo_ship){
 
+}
 
 /****Tests****/
 
@@ -91,7 +94,6 @@ int TestParseInputCrates(){
     
 }
 
-
 // This test passes a transform instruction into the parsing function 
 int TestParseLineForMoves(){
     string test_line = "move 2 from 2 to 8";
@@ -108,18 +110,49 @@ int TestParseLineForMovesDoubleDigits(){
     return actual_result == expected_result;
 }
 
-
 // This test passes in a move instruction and an m x n matrix and applies the move to the matrix. 
 int TestApplyTransform(){
-    return 1;
+    // Move 1 from 2 to 1
+    vector<int> move_instructions = {2,1,1};
+    vector<vector<char>> input_matrix = {   {'0', 'D', '0'},
+                                            {'N', 'C', '0'},
+                                            {'Z', 'M', 'P'} };
+    vector<vector<char>> expected_matrix = {{'D', '0', '0'},
+                                            {'N', 'C', '0'},
+                                            {'Z', 'M', 'P'} };
+    ApplyTransformToCrates(move_instructions, input_matrix);
+    for(int x = 0; x < expected_matrix.size(); x++){
+        if (expected_matrix[x] != input_matrix[x]){
+            return false;
+        }
+    }
+    return true;
 }
 
 
+int TestApplyTransformAddRow(){
+    // Move 1 from 2 to 1
+    vector<int> move_instructions = {1,3,3};
+    vector<vector<char>> input_matrix = {{'D', '0', '0'},
+                                         {'N', 'C', '0'},
+                                         {'Z', 'M', 'P'}};
+    vector<vector<char>> expected_matrix = {{'0', '0', 'Z'},
+                                            {'0', '0', 'N'},
+                                            {'0', 'C', 'D'},
+                                            {'0', 'M', 'P'} };
+    ApplyTransformToCrates(move_instructions, input_matrix);
+    for(int x = 0; x < expected_matrix.size(); x++){
+        if (expected_matrix[x] != input_matrix[x]){
+            return false;
+        }
+    }
+    return true;
+}
 
 /****Main function****/
 int main(){
     assert(TestParseInputCrates());
     assert(TestParseLineForMoves());
-    // assert(TestParseLineForMovesDoubleDigits());
+    assert(TestParseLineForMovesDoubleDigits());
     return 0;
 }
