@@ -267,5 +267,25 @@ int main(){
     assert(TestApplyTransform());
     assert(TestApplyTransformAddRow());
 
+    string line;
+    string file_path = "/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/inputs/day_5.txt";
+    vector<vector<char>> cargo_ship = ParseInputCrates(file_path);
+    
+    ifstream input_file (file_path);
+    //Need a function to get each line of instructions after the cargo ship
+    if(input_file.is_open()){
+        while(getline(input_file, line)){
+            if(line[0] == 'm'){
+                vector<int> parsed_instr = ParseLineForMoves(line);
+                ApplyTransformToCrates(parsed_instr, cargo_ship);
+            }
+        }
+    }
+
+    for(int x = 0; x < cargo_ship[0].size(); x++){
+        vector<char> next_char = findNextColumnElement(x+1, cargo_ship);
+        cout << next_char[0];
+    }
+
     return 0;
 }
