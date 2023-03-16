@@ -65,43 +65,10 @@ vector<int> ParseLineForMoves(string line){
     first_column = stoi(line.substr(from_index+5,1));
     sec_column = stoi(line.substr(from_index+10, 1));
 
-    cout << "move " << move_count << " from " << first_column << " to " << sec_column; 
+    // cout << "move " << move_count << " from " << first_column << " to " << sec_column; 
     vector<int> results = {first_column,sec_column,move_count};
     return results;
 
-}
-
-// This function gets a move_instructions vector and a matrix (passed by reference). It then applies the moves to the matrix
-void ApplyTransformToCrates(vector<int> instructions, vector<vector<char>> &cargo_ship){
-    int first_column = instructions[0];
-    int sec_column = instructions[1];
-    int moves = instructions[2];
-
-    int current_matrix_height = cargo_ship.size();
-    int current_matrix_width = cargo_ship[0].size();
-    // move `moves` amount of elements from first_column to sec_column
-    // - if the column in sec_column is full, add another row above it and insert the element into the correct position
-    for(int i = 0; i < moves; i++){
-        // Get the element to move 
-        vector<char> next_element = findNextColumnElement(first_column, cargo_ship);
-        //check state of column to move_to
-        vector<char> destination_element = findNextColumnElement(sec_column, cargo_ship);
-
-        // If there is space above the destination column, move the next_element to it
-        if (destination_element[0] != '0'){
-            cargo_ship[destination_element[1]-1][sec_column-1] = next_element[0];
-        } 
-        else{
-            //Construct vector to insert
-            vector<char> new_row = {};
-            for(int x = 0; x < current_matrix_width; x ++){
-                new_row.push_back('0');
-            }
-            new_row[sec_column-1] = next_element[0];
-            //insert new row with element
-            cargo_ship.insert(cargo_ship.begin(), new_row);
-        }
-    }
 }
 
 // This function takes in a column number and a matrix and returns the next non-zero character on the column. Also includes the position of the element
@@ -124,6 +91,46 @@ vector<char> findNextColumnElement(int column_of_interest, vector<vector<char>> 
     result = {'0', c};
     return result;
 }
+
+
+// This function gets a move_instructions vector and a matrix (passed by reference). It then applies the moves to the matrix
+void ApplyTransformToCrates(vector<int> instructions, vector<vector<char>> &cargo_ship){
+    int first_column = instructions[0];
+    int sec_column = instructions[1];
+    int moves = instructions[2];
+
+    int current_matrix_height = cargo_ship.size();
+    int current_matrix_width = cargo_ship[0].size();
+    // move `moves` amount of elements from first_column to sec_column
+    // - if the column in sec_column is full, add another row above it and insert the element into the correct position
+    for(int i = 0; i < moves; i++){
+        // Get the element to move 
+        vector<char> next_element = findNextColumnElement(first_column, cargo_ship);
+        //check state of column to move_to
+        vector<char> destination_element = findNextColumnElement(sec_column, cargo_ship);
+
+        // If there is space above the destination column, move the next_element to it
+        if (destination_element[1] != '1'){
+            int destination_row = destination_element[1]-'0'-2;
+            int source_row = next_element[1]-'0'-1;
+            cargo_ship[destination_row][sec_column-1] = next_element[0];
+            cargo_ship[source_row][first_column-1] = '0';
+        } 
+        else{
+            //Construct vector to insert
+            vector<char> new_row = {};
+            for(int x = 0; x < current_matrix_width; x ++){
+                new_row.push_back('0');
+            }
+            new_row[sec_column-1] = next_element[0];
+            //insert new row with element
+            cargo_ship.insert(cargo_ship.begin(), new_row);
+            int source_row = next_element[1]-'0'-1;
+            cargo_ship[source_row+1][first_column-1] = '0';
+        }
+    }
+}
+
 
 
 /****Tests****/
@@ -258,6 +265,7 @@ int main(){
 
     // Apply Transform tests
     assert(TestApplyTransform());
-    
+    assert(TestApplyTransformAddRow());
+
     return 0;
 }
