@@ -73,8 +73,41 @@ vector<int> ParseLineForMoves(string line){
 
 // This function gets a move_instructions vector and a matrix (passed by reference). It then applies the moves to the matrix
 void ApplyTransformToCrates(vector<int> instructions, vector<vector<char>> &cargo_ship){
+    int first_column = instructions[0];
+    int sec_column = instructions[1];
+    int moves = instructions[2];
+
+    int current_matrix_height = cargo_ship.size();
+    int current_matrix_width = cargo_ship[0].size();
+    // move `moves` amount of elements from first_column to sec_column
+    // - if the column in sec_column is full, add another row above it and insert the element into the correct position
+    // for(int i = 0; i < moves; i++){
+    //     // if the column is full, add another row above it 
+    //     if(cargo_ship[0][sec_column-1] != '0'){
+    //         vector<char> new_row = {};
+    //         for(int x = 0; x < current_matrix_width; x++){
+    //             new_row[x] == '0';
+    //         }
+    //         new_row[sec_column-1] == 
+    //     }
+    // }
 
 }
+
+// This function takes in a column number and a matrix and returns the next non-zero character on the column
+char findNextColumnElement(int column_of_interest, vector<vector<char>> cargo_ship){
+    vector<char> full_column = {};
+    int height = cargo_ship.size();
+    for(int x = 0; x < height; x++){
+        char current_element = cargo_ship[x][column_of_interest-1];
+        if(current_element != '0'){
+            return cargo_ship[x][column_of_interest-1];
+        }
+    }
+    return '0';
+    
+}
+
 
 /****Tests****/
 
@@ -129,7 +162,6 @@ int TestApplyTransform(){
     return true;
 }
 
-
 int TestApplyTransformAddRow(){
     // Move 1 from 2 to 1
     vector<int> move_instructions = {1,3,3};
@@ -149,10 +181,53 @@ int TestApplyTransformAddRow(){
     return true;
 }
 
+
+// Tests for finding next element in specified column
+int testFindNextColumnOneElement(){
+    vector<vector<char>> expected_matrix = {{'0', 'D', '0'},
+                                            {'N', 'C', '0'},
+                                            {'Z', 'M', 'P'} };
+    int column = 1;
+    return (findNextColumnElement(column, expected_matrix) == 'N');
+
+}
+
+int testFindNextColumnTwoElement(){
+    vector<vector<char>> expected_matrix = {{'0', 'D', '0'},
+                                            {'N', 'C', '0'},
+                                            {'Z', 'M', 'P'} };
+    int column = 2;
+    return (findNextColumnElement(column, expected_matrix) == 'D');
+
+}
+
+int testFindNextColumnThreeElement(){
+    vector<vector<char>> expected_matrix = {{'0', 'D', '0'},
+                                            {'N', 'C', '0'},
+                                            {'Z', 'M', 'P'} };
+    int column = 3;
+    return (findNextColumnElement(column, expected_matrix) == 'P');
+
+}
+
+int testFindNextColumnEmptyElement(){
+    vector<vector<char>> expected_matrix = {{'0', 'D', '0'},
+                                            {'N', 'C', '0'},
+                                            {'Z', 'M', '0'} };
+    int column = 3;
+    return (findNextColumnElement(column, expected_matrix) == '0');
+}
+
+
 /****Main function****/
 int main(){
     assert(TestParseInputCrates());
     assert(TestParseLineForMoves());
     assert(TestParseLineForMovesDoubleDigits());
+
+    assert(testFindNextColumnOneElement());\
+    assert(testFindNextColumnTwoElement());
+    assert(testFindNextColumnThreeElement());
+    assert(testFindNextColumnEmptyElement());
     return 0;
 }
