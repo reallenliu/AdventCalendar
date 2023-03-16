@@ -83,12 +83,25 @@ void ApplyTransformToCrates(vector<int> instructions, vector<vector<char>> &carg
     // - if the column in sec_column is full, add another row above it and insert the element into the correct position
     for(int i = 0; i < moves; i++){
         // Get the element to move 
-        // char next_element = findNextColumnElement(first_column, cargo_ship);
-        
+        vector<char> next_element = findNextColumnElement(first_column, cargo_ship);
         //check state of column to move_to
-        // char destination_element = 
-    }
+        vector<char> destination_element = findNextColumnElement(sec_column, cargo_ship);
 
+        // If there is space above the destination column, move the next_element to it
+        if (destination_element[0] != '0'){
+            cargo_ship[destination_element[1]-1][sec_column-1] = next_element[0];
+        } 
+        else{
+            //Construct vector to insert
+            vector<char> new_row = {};
+            for(int x = 0; x < current_matrix_width; x ++){
+                new_row.push_back('0');
+            }
+            new_row[sec_column-1] = next_element[0];
+            //insert new row with element
+            cargo_ship.insert(cargo_ship.begin(), new_row);
+        }
+    }
 }
 
 // This function takes in a column number and a matrix and returns the next non-zero character on the column. Also includes the position of the element
@@ -231,13 +244,20 @@ int testFindNextColumnEmptyElement(){
 
 /****Main function****/
 int main(){
+    // Parsing tests
     assert(TestParseInputCrates());
     assert(TestParseLineForMoves());
     assert(TestParseLineForMovesDoubleDigits());
 
+
+    // get next element in column tests
     assert(testFindNextColumnOneElement());
     assert(testFindNextColumnTwoElement());
     assert(testFindNextColumnThreeElement());
     assert(testFindNextColumnEmptyElement());
+
+    // Apply Transform tests
+    assert(TestApplyTransform());
+    
     return 0;
 }
