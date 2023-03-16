@@ -81,31 +81,35 @@ void ApplyTransformToCrates(vector<int> instructions, vector<vector<char>> &carg
     int current_matrix_width = cargo_ship[0].size();
     // move `moves` amount of elements from first_column to sec_column
     // - if the column in sec_column is full, add another row above it and insert the element into the correct position
-    // for(int i = 0; i < moves; i++){
-    //     // if the column is full, add another row above it 
-    //     if(cargo_ship[0][sec_column-1] != '0'){
-    //         vector<char> new_row = {};
-    //         for(int x = 0; x < current_matrix_width; x++){
-    //             new_row[x] == '0';
-    //         }
-    //         new_row[sec_column-1] == 
-    //     }
-    // }
+    for(int i = 0; i < moves; i++){
+        // Get the element to move 
+        // char next_element = findNextColumnElement(first_column, cargo_ship);
+        
+        //check state of column to move_to
+        // char destination_element = 
+    }
 
 }
 
-// This function takes in a column number and a matrix and returns the next non-zero character on the column
-char findNextColumnElement(int column_of_interest, vector<vector<char>> cargo_ship){
+// This function takes in a column number and a matrix and returns the next non-zero character on the column. Also includes the position of the element
+vector<char> findNextColumnElement(int column_of_interest, vector<vector<char>> cargo_ship){
     vector<char> full_column = {};
+    vector<char> result = {' ',' '};
     int height = cargo_ship.size();
     for(int x = 0; x < height; x++){
         char current_element = cargo_ship[x][column_of_interest-1];
         if(current_element != '0'){
-            return cargo_ship[x][column_of_interest-1];
+            // If the column is not empty, return the element along with the index of it
+            result[0]= current_element;
+            char pos = x + 1 + '0';
+            result[1] = pos;
+            return result;
         }
     }
-    return '0';
-    
+    // If the column is empty, return '0' and the height of the matrix
+    char c = height + '0';
+    result = {'0', c};
+    return result;
 }
 
 
@@ -188,7 +192,9 @@ int testFindNextColumnOneElement(){
                                             {'N', 'C', '0'},
                                             {'Z', 'M', 'P'} };
     int column = 1;
-    return (findNextColumnElement(column, expected_matrix) == 'N');
+    vector<char> expected_result = {'N', '2'};
+
+    return (findNextColumnElement(column, expected_matrix) == expected_result);
 
 }
 
@@ -197,8 +203,9 @@ int testFindNextColumnTwoElement(){
                                             {'N', 'C', '0'},
                                             {'Z', 'M', 'P'} };
     int column = 2;
-    return (findNextColumnElement(column, expected_matrix) == 'D');
+    vector<char> expected_result = {'D', '1'};
 
+    return (findNextColumnElement(column, expected_matrix) == expected_result);
 }
 
 int testFindNextColumnThreeElement(){
@@ -206,8 +213,9 @@ int testFindNextColumnThreeElement(){
                                             {'N', 'C', '0'},
                                             {'Z', 'M', 'P'} };
     int column = 3;
-    return (findNextColumnElement(column, expected_matrix) == 'P');
+    vector<char> expected_result = {'P', '3'};
 
+    return (findNextColumnElement(column, expected_matrix) == expected_result);
 }
 
 int testFindNextColumnEmptyElement(){
@@ -215,7 +223,9 @@ int testFindNextColumnEmptyElement(){
                                             {'N', 'C', '0'},
                                             {'Z', 'M', '0'} };
     int column = 3;
-    return (findNextColumnElement(column, expected_matrix) == '0');
+   vector<char> expected_result = {'0', '3'};
+
+    return (findNextColumnElement(column, expected_matrix) == expected_result);
 }
 
 
@@ -225,7 +235,7 @@ int main(){
     assert(TestParseLineForMoves());
     assert(TestParseLineForMovesDoubleDigits());
 
-    assert(testFindNextColumnOneElement());\
+    assert(testFindNextColumnOneElement());
     assert(testFindNextColumnTwoElement());
     assert(testFindNextColumnThreeElement());
     assert(testFindNextColumnEmptyElement());
