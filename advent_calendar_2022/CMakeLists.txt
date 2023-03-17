@@ -10,6 +10,7 @@ add_executable(day_02_2 src/day_2/day_2_puzzle_2.cpp)
 add_executable(day_03_1 src/day_3/day_3_puzzle_1.cpp)
 add_executable(day_03_2 src/day_3/day_3_puzzle_2.cpp)
 add_executable(day_04_1 src/day_4/day_4_puzzle_1.cpp)
+add_executable(day_05_1 src/day_5/day_5_puzzle_1.cpp)
 
 
 
