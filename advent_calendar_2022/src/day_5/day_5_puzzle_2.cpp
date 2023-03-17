@@ -10,7 +10,6 @@ using namespace std;
 
 /****Functions****/
 
-// Each line length is 34
 // This function gets an input file and returns a matrix representing the arrangement of crates
 vector<vector<char>> ParseInputCrates(string file_path){
     string line;
@@ -51,7 +50,6 @@ vector<vector<char>> ParseInputCrates(string file_path){
     }
     return cargo_ship;
 }
-
 
 // This function gets a string as an input and parses it for the moves
 vector<int> ParseLineForMoves(string line){
@@ -277,7 +275,6 @@ int main(){
     assert(TestParseLineForMoves());
     assert(TestParseLineForMovesDoubleDigits());
 
-
     // get next element in column tests
     assert(testFindNextColumnOneElement());
     assert(testFindNextColumnTwoElement());
@@ -289,25 +286,25 @@ int main(){
     assert(TestApplyTransformMultiple());
     assert(TestApplyTransformAddRow());
 
-    // string line;
-    // string file_path = "/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/inputs/day_5.txt";
-    // vector<vector<char>> cargo_ship = ParseInputCrates(file_path);
+    string line;
+    string file_path = "/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/inputs/day_5.txt";
+    vector<vector<char>> cargo_ship = ParseInputCrates(file_path);
     
-    // ifstream input_file (file_path);
-    // //Need a function to get each line of instructions after the cargo ship
-    // if(input_file.is_open()){
-    //     while(getline(input_file, line)){
-    //         if(line[0] == 'm'){
-    //             vector<int> parsed_instr = ParseLineForMoves(line);
-    //             ApplyTransformToCrates(parsed_instr, cargo_ship);
-    //         }
-    //     }
-    // }
+    ifstream input_file (file_path);
+    //Need a function to get each line of instructions after the cargo ship
+    if(input_file.is_open()){
+        while(getline(input_file, line)){
+            if(line[0] == 'm'){
+                vector<int> parsed_instr = ParseLineForMoves(line);
+                ApplyTransformToCrates(parsed_instr, cargo_ship);
+            }
+        }
+    }
 
-    // for(int x = 0; x < cargo_ship[0].size(); x++){
-    //     vector<char> next_char = findNextColumnElement(x+1, cargo_ship);
-    //     cout << next_char[0];
-    // }
+    for(int x = 0; x < cargo_ship[0].size(); x++){
+        vector<char> next_char = findNextColumnElement(x+1, cargo_ship);
+        cout << next_char[0];
+    }
 
     return 0;
 }
