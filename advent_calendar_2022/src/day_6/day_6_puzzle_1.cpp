@@ -11,14 +11,6 @@ using namespace std;
 /**FUNCTIONS**/
 
 
-
-// Function to go through a string N times and determine if there is a substring of length 4 that contains repeating characters
-// Returns the position of the character right after the end of the marker
-int FindStartOfPacket(string inputString){
-
-    return 0;
-}
-
 // Function that determines if there are repeating characters in a string. 
 // Also returns the positions of the repeated characters in format:
 // {true/false, first_pos, sec_pos}
@@ -50,6 +42,38 @@ int SkipDuplicate(string inputString, vector<int> repeatsResult){
     int first_pos = repeatsResult[1];
     return first_pos+1;
 }
+
+// Function to go through a string N times and determine if there is a substring of length 4 that contains repeating characters
+// Returns the position of the character right after the end of the marker
+int FindStartOfPacket(string inputString){
+    int length = inputString.size();
+    string next_frame = "";
+    bool nonrepeat_found = false;
+
+    int i = 0;
+    int result = 0;
+    // Keep searching until a frame without any repeating characters is found
+    while(!nonrepeat_found && i+4 < length){
+        // get the next 4 frames
+        next_frame = inputString.substr(i,4);
+        
+        vector<int> repeats_char_result = RepeatsChar(next_frame);
+
+        // check to see if there are any repeats in next_frame
+        nonrepeat_found = !repeats_char_result[0];
+
+        if (nonrepeat_found){
+            result = i+4;
+            return result;
+        }
+        else{
+            i += SkipDuplicate(inputString, repeats_char_result);
+        }
+    }
+
+    return 0;
+}
+
 
 /**TESTS**/
 
@@ -133,12 +157,12 @@ int testSkipRepeatAdjacent(){
 /**MAIN IMPLEMENTATION**/
 int main(){
 
-    // assert(testHasMarkerOne());
-    // assert(testHasMarkerTwo());
-    // assert(testHasMarkerThree());
-    // assert(testHasMarkerFour());
-    // assert(testHasMarkerFive());
-    // assert(testDoesNotHaveMarker());
+    assert(testHasMarkerOne());
+    assert(testHasMarkerTwo());
+    assert(testHasMarkerThree());
+    assert(testHasMarkerFour());
+    assert(testHasMarkerFive());
+    assert(testDoesNotHaveMarker());
 
 
     assert(testHasRepeatingChar());
