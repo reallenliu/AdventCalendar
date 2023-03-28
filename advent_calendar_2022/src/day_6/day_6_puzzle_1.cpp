@@ -1,6 +1,7 @@
 #include <string.h>
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <vector>
 #include <string>
 #include <assert.h>
@@ -164,13 +165,24 @@ int main(){
     assert(testHasMarkerFive());
     assert(testDoesNotHaveMarker());
 
-
     assert(testHasRepeatingChar());
     assert(testDoesNotHaveRepeatingChar());
 
     assert(testSkipRepeatOne());
     assert(testSkipRepeatTwo());
     assert(testSkipRepeatAdjacent());
+
+    string line;
+    string file_path = "/home/aliu/Self_Practice_Study/AdventCalendar/advent_calendar_2022/inputs/day_6.txt";
+    
+    ifstream input_file(file_path);
+    if (input_file.is_open()){
+        while(getline(input_file, line)){
+            int start_of_packet = FindStartOfPacket(line);
+            cout << start_of_packet;
+        }
+    }
+
 
     return 0;
 }
